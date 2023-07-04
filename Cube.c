@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 float A,B,C;
 
@@ -52,7 +53,6 @@ void calculateForSurface(float cubeX,float cubeY,float cubeZ,int ch){
 }
 int main(){
     printf("\x1b[2J");
-    //A = B = C = 0.0;
 
     while(1){
         memset(buffer, backgroundASCIICode,width * height);
@@ -60,7 +60,7 @@ int main(){
         for(float cubeX = -cubeWidth; cubeX < cubeWidth; cubeX += incrementSpeed){
             for(float cubeY = -cubeWidth; cubeY < cubeWidth;
                 cubeY += incrementSpeed){
-             calculateForSurface(cubeX,cubeY,-cubeWidth, '#');
+            calculateForSurface(cubeX,cubeY,-cubeWidth, '.');
             }
         }
             printf("\x1b[H");
@@ -68,8 +68,12 @@ int main(){
                 putchar(k % width ? buffer[k] : 10);
             }
 
-            A += 0.005;
-            B += 0.005;
+            A += 0.1;
+            B += 0.1;
+            struct timespec sleepTime;
+            sleepTime.tv_sec = 0;
+            sleepTime.tv_nsec = 1000000;
+            nanosleep(&sleepTime, NULL);
         }
         return 0;
 }
