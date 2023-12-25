@@ -32,16 +32,6 @@ float vertices[8][3] = {
     {-cubeWidth, cubeWidth, cubeWidth}
 };
 
-// キューブの各面を構成する頂点のインデックス
-int faces[6][4] = {
-    {0, 1, 2, 3}, // 前面
-    {4, 5, 6, 7}, // 背面
-    {0, 3, 7, 4}, // 左面
-    {1, 2, 6, 5}, // 右面
-    {0, 1, 5, 4}, // 下面
-    {3, 2, 6, 7}  // 上面
-};
-
 // 3D空間の点を2Dスクリーン上に変換するための関数
 float calculateX(int i , int j, int k){
     return j * sin(A) * sin(B) * cos(C) - k * cos(A) * sin(B) * cos(C) +
@@ -76,6 +66,16 @@ void calculateForSurface(float cubeX,float cubeY,float cubeZ,int ch){
     }
 }
 
+// 線分を描画するための関数
+void drawLine(float x0, float y0, float z0, float x1, float y1, float z1, int ch) {
+    int steps = fmax(fabs(x1 - x0), fabs(y1 - y0));
+    steps = fmax(steps, fabs(z1 - z0));
+    for (int i = 0; i <= steps; i++) {
+        float t = (float)i / steps;
+        calculateForSurface(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t, z0 + (z1 - z0) * t, ch);
+    }
+}
+
 int main(){
     printf("\x1b[2J"); // コンソールをクリア
 
@@ -83,14 +83,18 @@ int main(){
         memset(buffer, backgroundASCIICode, width * height);
         memset(zBuffer, 0, width * height * sizeof(float));
 
-        // キューブの各面を描画
-        for(int face = 0; face < 6; face++) {
-            for(int v = 0; v < 4; v++) {
-                // 頂点を取得
-                float *vertex = vertices[faces[face][v]];
-                // 頂点で面を描画
-                calculateForSurface(vertex[0], vertex[1], vertex[2], 'X'); // または他の文字
-            }
+        // キューブの各辺を描画するためのインデックス
+        int edges[12][2] = {
+            {0, 1}, {1, 2}, {2, 3}, {3, 0},
+            {4, 5}, {5, 6}, {6, 7}, {7, 4},
+            {0, 4}, {1, 5}, {2, 6}, {3, 7}
+        };
+
+        // キューブの各辺を描画
+        for(int edge = 0; edge < 12; edge++) {
+            float *v0 = vertices[edges[edge][0]];
+            float *v1 = vertices[edges[edge][1]];
+            drawLine(v0[0], v0[1], v0[2], v1[0], v1[1], v1[2], '0');
         }
 
         // バッファを出力
