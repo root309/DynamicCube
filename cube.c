@@ -72,7 +72,7 @@ int main(){
             B += 0.1;
             struct timespec sleepTime;
             sleepTime.tv_sec = 0;
-            sleepTime.tv_nsec = 1000000;
+            sleepTime.tv_nsec = 100000000;
             nanosleep(&sleepTime, NULL);
         }
         return 0;
