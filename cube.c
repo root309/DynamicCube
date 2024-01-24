@@ -55,7 +55,7 @@ void calculateForSurface(float cubeX,float cubeY,float cubeZ,int ch){
     ooz = 1/z;
 
     xp = (int)(width/2 + K1 * ooz * x * 2);
-    yp = (int)(height/2 + K1 * ooz * y);
+    yp = (int)(height/1.3 + K1 * ooz * y * 0.5);
 
     idx = xp + yp * width;
     if(idx>= 0 && idx < width * height){
