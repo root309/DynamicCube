@@ -1,5 +1,5 @@
-# 3D Rotating Cube in C(English)
-
+# 3D Rotating Cube in C
+Might have to be Linux to work.
 ## Overview
 This program creates a dynamic simulation of a rotating 3D cube in a console window. It utilizes trigonometric functions for rotation, a z-buffer for depth handling, and character mapping for rendering.
 
